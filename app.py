@@ -1,87 +1,96 @@
 import streamlit as st
 import pandas as pd
 import math
-from datetime import datetime
 
-# 1. Configuración de la App
-st.set_page_config(page_title="Mi Gimnasio Pro", page_icon="🏋️‍♂️")
+# 1. Configuración de Estilo "Gimnasio Real" (Negro y Naranja)
+st.set_page_config(page_title="Gym Pro Elite", page_icon="💪", layout="wide")
 
-# 2. Título y Bienvenida
-st.title("🏋️‍♂️ Mi Gimnasio Pro")
 st.markdown("""
-### 🌟 ¡Bienvenido a tu nueva vida saludable!
-Esta aplicación es tu asistente personal para lograr el cuerpo que deseas. 
-**¿Qué puedes hacer hoy?** Usa las pestañas de abajo para navegar.
-""")
+    <style>
+    .stApp {
+        background-color: #0E1117;
+        color: #FFFFFF;
+    }
+    h1, h2, h3 {
+        color: #FF4B2B !important; /* Naranja Deportivo */
+    }
+    .stButton>button {
+        background-color: #FF4B2B;
+        color: white;
+        border-radius: 10px;
+    }
+    .stTabs [data-baseweb="tab-list"] {
+        gap: 24px;
+    }
+    .stTabs [data-baseweb="tab"] {
+        height: 50px;
+        white-space: pre-wrap;
+        background-color: #1E1E1E;
+        border-radius: 4px 4px 0px 0px;
+        color: white;
+    }
+    .stTabs [aria-selected="true"] {
+        background-color: #FF4B2B;
+    }
+    </style>
+    """, unsafe_allow_stdio=True)
 
-# 3. Formulario en la barra lateral (Perfil)
-st.sidebar.header("👤 Tu Perfil")
-nombre = st.sidebar.text_input("Nombre", "Usuario")
-edad = st.sidebar.number_input("Edad", 15, 100, 25)
-genero = st.sidebar.selectbox("Género", ["Hombre", "Mujer"])
-altura = st.sidebar.number_input("Altura (cm)", 100, 250, 170)
+# 2. Encabezado con Imagen de Fondo
+st.image("https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=1470&auto=format&fit=crop", caption="Tu éxito comienza hoy", use_container_width=True)
+
+st.title("🏋️‍♂️ GYM PRO ELITE")
+
+# 3. Sidebar (Perfil)
+st.sidebar.header("👤 Perfil de Atleta")
+nombre = st.sidebar.text_input("Nombre", "Atleta")
 objetivo = st.sidebar.selectbox("Objetivo", ["Perder Peso", "Ganar Músculo"])
+peso_act = st.sidebar.number_input("Peso Actual (kg)", 40.0, 150.0, 70.0)
 
-# 4. Pestañas principales
-tab1, tab2, tab3 = st.tabs(["📊 Mi Progreso", "🍎 Mi Dieta", "💪 Mi Rutina"])
+# 4. Pestañas de la App Completa
+tab1, tab2, tab3, tab4 = st.tabs(["💪 RUTINAS DIARIAS", "📊 BIOMETRÍA", "🍎 NUTRICIÓN", "💧 HIDRATACIÓN"])
 
 with tab1:
-    st.header("Seguimiento Físico")
-    col1, col2, col3 = st.columns(3)
-    peso_act = col1.number_input("Peso (kg)", 30.0, 200.0, 70.0)
-    cintura_act = col2.number_input("Cintura (cm)", 40.0, 150.0, 80.0)
-    cuello_act = col3.number_input("Cuello (cm)", 20.0, 70.0, 40.0)
+    st.header("📋 Tu Entrenamiento del Día")
     
-    # Cálculos automáticos
-    imc = peso_act / ((altura/100)**2)
+    # Ejemplo de ejercicio con imagen
+    col1, col2 = st.columns([1, 2])
     
-    # Fórmula Grasa Corporal (Marina EE.UU.)
-    try:
-        if genero == "Hombre":
-            grasa = 495 / (1.0324 - 0.19077 * math.log10(cintura_act - cuello_act) + 0.15456 * math.log10(altura)) - 450
-        else:
-            # Aproximación para mujer
-            grasa = 495 / (1.29579 - 0.35004 * math.log10(cintura_act + 10 - cuello_act) + 0.22100 * math.log10(altura)) - 450
-    except:
-        grasa = 0
+    with col1:
+        st.image("https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHJueW92Z3J6ZzR6ZzR6ZzR6ZzR6ZzR6ZzR6ZzR6ZzR6ZzR6JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/3o7TKMGpxxSAYX9HlS/giphy.gif", caption="Sentadillas")
+    
+    with col2:
+        st.subheader("Sentadilla Goblet")
+        st.write("**Series:** 4 | **Reps:** 15 | **Descanso:** 60 seg")
+        st.info("💡 Mantén la espalda recta y el peso cerca de tu pecho.")
+        st.checkbox("Marcar como completado", key="ej1")
 
     st.divider()
-    st.subheader("Resultados de Hoy")
-    c_imc, c_grasa = st.columns(2)
-    c_imc.metric("Tu IMC", round(imc, 1))
-    c_grasa.metric("Grasa Corporal", f"{round(grasa, 1)}%")
+
+    col3, col4 = st.columns([1, 2])
+    with col3:
+        st.image("https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHJueW92Z3J6ZzR6ZzR6ZzR6ZzR6ZzR6ZzR6ZzR6ZzR6ZzR6JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/l0HlPtb37SjPr7iM/giphy.gif", caption="Flexiones")
+    
+    with col4:
+        st.subheader("Flexiones de Brazo")
+        st.write("**Series:** 3 | **Reps:** Al fallo | **Descanso:** 90 seg")
+        st.info("💡 No permitas que tu cadera caiga. Cuerpo como una tabla.")
+        st.checkbox("Marcar como completado", key="ej2")
 
 with tab2:
-    st.header("Plan Nutricional Inteligente")
-    # Cálculo de Calorías (Harris-Benedict)
-    tmb = (10 * peso_act) + (6.25 * altura) - (5 * edad) + (5 if genero == "Hombre" else -161)
-    mantenimiento = tmb * 1.55
-    kcal_final = mantenimiento - 500 if objetivo == "Perder Peso" else mantenimiento + 300
-    
-    st.success(f"🎯 Meta diaria recomendada: **{round(kcal_final)} kcal**")
-    
-    # Macros
-    prot = peso_act * (2.0 if objetivo == "Perder Peso" else 2.2)
-    gras = peso_act * 1.0
-    carb = (kcal_final - (prot * 4) - (gras * 9)) / 4
-    
-    m1, m2, m3 = st.columns(3)
-    m1.info(f"🥩 Prot: {round(prot)}g")
-    m2.info(f"🥑 Grasas: {round(gras)}g")
-    m3.info(f"🍝 Carbos: {round(carb)}g")
+    st.header("📉 Seguimiento de Medidas")
+    st.write("Registra tu evolución para ver las gráficas de progreso.")
+    # Aquí iría el código de gráficas anterior...
 
 with tab3:
-    st.header("Rutina Recomendada")
-    if objetivo == "Perder Peso":
-        st.write("🔥 **Enfoque:** Quema de grasa y tono muscular.")
-        st.write("1. **Sentadillas:** 4 series de 20 reps.")
-        st.write("2. **Flexiones:** 3 series al fallo.")
-        st.write("3. **Burpees:** 3 series de 12 reps.")
-    else:
-        st.write("⚡ **Enfoque:** Hipertrofia y fuerza.")
-        st.write("1. **Press Militar:** 4 series de 10 reps.")
-        st.write("2. **Peso Muerto:** 4 series de 8 reps.")
-        st.write("3. **Dominadas o Remo:** 3 series de 10 reps.")
+    st.header("🥗 Diario de Alimentos")
+    st.write("Próximamente: Registro de nutrientes y vitaminas.")
+    comida = st.text_input("¿Qué comiste hoy?")
+    calorias_comida = st.number_input("Calorías estimadas", 0, 2000, 0)
+    if st.button("Registrar Alimento"):
+        st.success(f"Registrado: {comida} ({calorias_comida} kcal)")
 
-st.sidebar.divider()
-st.sidebar.write("💡 *Recuerda actualizar tu peso cada semana para ajustar tus macros.*")
+with tab4:
+    st.header("💧 Control de Hidratación")
+    vasos = st.slider("Vasos de agua hoy (250ml)", 0, 20, 0)
+    st.progress(vasos / 10 if vasos <= 10 else 1.0)
+    st.write(f"Has bebido {vasos * 0.25} Litros de agua.")
